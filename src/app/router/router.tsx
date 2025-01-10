@@ -4,41 +4,46 @@ import AppInit from '@/app/app-init/app-init'
 
 import { ROUTES } from '@/shared/config/routes'
 
-export const router = createBrowserRouter([
-    {
-        path: '/',
-        Component: AppInit,
-        children: [
-            {
-                path: '/',
-                lazy: async () => {
-                    const { AttendancePage } = await import('@/pages/attendance')
+const basename = import.meta.env.VITE_APP_BASENAME
 
-                    return {
-                        Component: AttendancePage,
-                    }
-                },
-            },
-            {
-                path: '/schoolboy/:id',
-                lazy: async () => {
-                    const { SchoolboyDetails } = await import('@/pages/schoolboy-details')
+export const router = createBrowserRouter(
+    [
+        {
+            path: '/',
+            Component: AppInit,
+            children: [
+                {
+                    path: '/',
+                    lazy: async () => {
+                        const { AttendancePage } = await import('@/pages/attendance')
 
-                    return {
-                        Component: SchoolboyDetails,
-                    }
+                        return {
+                            Component: AttendancePage,
+                        }
+                    },
                 },
-            },
-            {
-                path: '*',
-                element: (
-                    <Navigate
-                        to={{
-                            pathname: ROUTES.ATTENDANCE,
-                        }}
-                    />
-                ),
-            },
-        ],
-    },
-])
+                {
+                    path: '/schoolboy/:id',
+                    lazy: async () => {
+                        const { SchoolboyDetails } = await import('@/pages/schoolboy-details')
+
+                        return {
+                            Component: SchoolboyDetails,
+                        }
+                    },
+                },
+                {
+                    path: '*',
+                    element: (
+                        <Navigate
+                            to={{
+                                pathname: ROUTES.ATTENDANCE,
+                            }}
+                        />
+                    ),
+                },
+            ],
+        },
+    ],
+    { basename: basename }
+)
